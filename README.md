@@ -65,7 +65,7 @@ validateToken - Middleware to validate JWT tokens for protected routes.
 The project includes error handling for database connection issues and invalid routes.
 ## Project Structure
    ```bash
-  backend-dipesh-malvia/
+     backend-dipesh-malvia/
 ├── controllers/
 │   └── contact.controller.js
 ├── middleware/

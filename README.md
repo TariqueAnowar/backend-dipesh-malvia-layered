@@ -65,7 +65,7 @@ validateToken - Middleware to validate JWT tokens for protected routes.
 The project includes error handling for database connection issues and invalid routes.
 ## Project Structure
    ```bash
-     backend-dipesh-malvia/
+backend-dipesh-malvia/
 ├── controllers/
 │   └── contact.controller.js
 ├── middleware/
@@ -82,9 +82,8 @@ The project includes error handling for database connection issues and invalid r
 ├── package.json
 └── README.md
 
-
 ## License
-   ```yaml
+   
 This project is licensed under the MIT License.
   
 Make sure to replace `your-username` with your actual GitHub username and `your_mongodb_connection_string` and `your_jwt_secret` with your actual MongoDB connection string and JWT secret, respectively.

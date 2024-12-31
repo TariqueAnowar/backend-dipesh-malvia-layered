@@ -26,7 +26,9 @@ This is a backend project built with Node.js, Express, and MongoDB. The project 
    PORT=8001
    MONGODB_URI=your_mongodb_connection_string
    JWT_SECRET=your_jwt_secret
-6. npm start
+6. Start the server:
+   ```bash
+    npm start
    
 ## Usage
 The server will start on the port specified in the .env file (default is 8001).

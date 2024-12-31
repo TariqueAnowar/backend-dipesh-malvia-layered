@@ -25,10 +25,10 @@ This is a backend project built with Node.js, Express, and MongoDB. The project 
    JWT_SECRET=your_jwt_secret
 4. npm start
    
-# Usage
+## Usage
 The server will start on the port specified in the .env file (default is 8001).
 The API endpoints can be accessed via http://localhost:8001.
-# API Endpoints
+## API Endpoints
 Contacts
 GET /contacts - Get all contacts (requires authentication)
 POST /contacts - Create a new contact (requires authentication)
@@ -38,11 +38,11 @@ DELETE /contacts/:id - Delete a contact by ID (requires authentication)
 # Authentication
 POST /auth/register - Register a new user
 POST /auth/login - Login a user and get a token
-# Middleware
+## Middleware
 validateToken - Middleware to validate JWT tokens for protected routes.
-# Error Handling
+## Error Handling
 The project includes error handling for database connection issues and invalid routes.
-# Project Structure
+## Project Structure
   backend-dipesh-malvia/
 ├── controllers/
 │   └── contact.controller.js
@@ -60,7 +60,7 @@ The project includes error handling for database connection issues and invalid r
 ├── package.json
 └── README.md
 
-# License
+## License
 This project is licensed under the MIT License.
   
 Make sure to replace `your-username` with your actual GitHub username and `your_mongodb_connection_string` and `your_jwt_secret` with your actual MongoDB connection string and JWT secret, respectively.

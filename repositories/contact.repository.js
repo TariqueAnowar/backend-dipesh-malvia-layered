@@ -10,7 +10,8 @@ class ContactRepository {
       const contacts = await ContactModel.find({ user_id });
       return contacts;
     } catch (err) {
-      throw new Error(err);
+      console.error(`Error finding contact by user_id: ${user_id}`, err);
+      throw err;
     }
   }
 
@@ -23,7 +24,11 @@ class ContactRepository {
 
       return contacts;
     } catch (err) {
-      throw new Error(err);
+      console.error(
+        `Error finding contact by user_id or _id: ${(user_id, _id)}`,
+        err
+      );
+      throw err;
     }
   }
 
@@ -41,7 +46,11 @@ class ContactRepository {
 
       return contact;
     } catch (err) {
-      throw new Error(err);
+      console.error(
+        `Error creating contact : ${(user_id, name, email, phone)}`,
+        err
+      );
+      throw err;
     }
   }
 
@@ -59,7 +68,11 @@ class ContactRepository {
 
       return updatedContact;
     } catch (err) {
-      throw new Error(err);
+      console.error(
+        `Error updating contact by user_id and _id: ${(user_id, _id)}`,
+        err
+      );
+      throw err;
     }
   }
 
@@ -76,7 +89,11 @@ class ContactRepository {
 
       return deletedContact;
     } catch (err) {
-      throw new Error(err);
+      console.error(
+        `Error deleting contact by user_id and _id: ${(user_id, _id)}`,
+        err
+      );
+      throw err;
     }
   }
 }

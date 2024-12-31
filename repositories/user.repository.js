@@ -6,7 +6,8 @@ class UserRepository {
       const existingCustomer = await UserModel.findOne({ email: email });
       return existingCustomer;
     } catch (err) {
-      throw new Error(err);
+      console.error(`Error finding user by email: ${email}`, err);
+      throw err;
     }
   }
 
@@ -20,7 +21,13 @@ class UserRepository {
 
       return user;
     } catch (err) {
-      throw new Error(err);
+      console.error(
+        `Error creating user by username, hashedPassword, email: ${
+          (username, hashedPassword, email)
+        }`,
+        err
+      );
+      throw err;
     }
   }
 }

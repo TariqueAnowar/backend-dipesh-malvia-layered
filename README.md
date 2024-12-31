@@ -34,21 +34,37 @@ This is a backend project built with Node.js, Express, and MongoDB. The project 
 The server will start on the port specified in the .env file (default is 8001).
 The API endpoints can be accessed via http://localhost:8001.
 ## API Endpoints
-Contacts
-GET /contacts - Retrieve all contacts (requires authentication).
-POST /contacts - Create a new contact (requires authentication).
-GET /contacts/:id - Retrieve a contact by ID (requires authentication).
-PUT /contacts/:id - Update a contact by ID (requires authentication).
-DELETE /contacts/:id - Delete a contact by ID (requires authentication).
-## Authentication
-POST /auth/register - Register a new user.
-POST /auth/login - Login a user and retrieve a JWT token.
+
+### Contacts
+
+- **GET /contacts**  
+  Retrieve all contacts (requires authentication).
+
+- **POST /contacts**  
+  Create a new contact (requires authentication).
+
+- **GET /contacts/:id**  
+  Retrieve a contact by ID (requires authentication).
+
+- **PUT /contacts/:id**  
+  Update a contact by ID (requires authentication).
+
+- **DELETE /contacts/:id**  
+  Delete a contact by ID (requires authentication).
+
+### Authentication
+
+- **POST /auth/register**  
+  Register a new user.
+
+- **POST /auth/login**  
+  Login a user and retrieve a JWT token.
 ## Middleware
 validateToken - Middleware to validate JWT tokens for protected routes.
 ## Error Handling
 The project includes error handling for database connection issues and invalid routes.
 ## Project Structure
-```bash
+   ```bash
   backend-dipesh-malvia/
 ├── controllers/
 │   └── contact.controller.js

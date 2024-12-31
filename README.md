@@ -82,13 +82,4 @@ backend-dipesh-malvia/
 ├── package.json
 └── README.md
 
-## License
-   
-This project is licensed under the MIT License.
-  
-Make sure to replace `your-username` with your actual GitHub username and `your_mongodb_connection_string` and `your_jwt_secret` with your actual MongoDB connection string and JWT secret, respectively.
 
-Feel free to customize the `README.md` file further based on additional details or features of your project.
-Make sure to replace `your-username` with your actual GitHub username and `your_mongodb_connection_string` and `your_jwt_secret` with your actual MongoDB connection string and JWT secret, respectively.
-
-Feel free to customize the `README.md` file further based on additional details or features of your project.

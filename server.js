@@ -11,12 +11,12 @@ const startServer = async () => {
   try {
     const app = express();
 
-    // const isConnected = await dbConnection();
+    const isConnected = await dbConnection();
 
-    // if (!isConnected) {
-    //   console.error("Failed to connect to database. Server will not start.");
-    //   process.exit(1);
-    // }
+    if (!isConnected) {
+      console.error("Failed to connect to database. Server will not start.");
+      process.exit(1);
+    }
 
     await App(app);
 

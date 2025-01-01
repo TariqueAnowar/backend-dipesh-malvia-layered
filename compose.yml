@@ -17,16 +17,6 @@ services:
       ACCESS_TOKEN_SECRET: myaccesssecretforjwt
       MONGO_URI_LOCAL: mongodb://root:example@mongo:27017/
 
-    develop:
-      watch:
-        - path: ./package.json
-          action: rebuild
-        - path: ./package-lock.json
-          action: rebuild
-        - path: ./
-          target: /app
-          action: sync
-
   mongo:
     image: mongo
     restart: always

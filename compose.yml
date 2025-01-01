@@ -5,35 +5,28 @@ services:
     depends_on:
       - mongo
 
-    # specify the build context for the api service
     build:
       context: .
       dockerfile: Dockerfile
 
     ports:
-      - 8000:8000
+      - ${PORT:-8000}:8000
 
     environment:
       PORT: 8000
       ACCESS_TOKEN_SECRET: myaccesssecretforjwt
-      MONGO_URI_LOCAL: mongodb://root:example@mongo:8081/
+      MONGO_URI_LOCAL: mongodb://root:example@mongo:27017/
 
-    # establish docker compose watch mode for the api service
     develop:
-      # specify the files to watch for changes
       watch:
-        # it'll watch for changes in package.json and package-lock.json and rebuild the container and image if there are any changes
         - path: ./package.json
           action: rebuild
         - path: ./package-lock.json
           action: rebuild
-
-        # it'll watch for changes in the backend directory and sync the changes with the container real time
         - path: ./
           target: /app
           action: sync
 
-  # define the db service
   mongo:
     image: mongo
     restart: always
@@ -49,11 +42,8 @@ services:
     environment:
       ME_CONFIG_MONGODB_ADMINUSERNAME: root
       ME_CONFIG_MONGODB_ADMINPASSWORD: example
-      ME_CONFIG_MONGODB_URL: mongodb://root:example@mongo:8081/
+      ME_CONFIG_MONGODB_URL: mongodb://root:example@mongo:27017/
       ME_CONFIG_BASICAUTH: false
-    volumes:
-      - tasked:/data/db
 
-# define the volumes to be used by the services
 volumes:
   tasked:

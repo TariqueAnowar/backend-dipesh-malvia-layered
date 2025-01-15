@@ -2,7 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const App = require("./app");
 const dbConnection = require("./config/dbConnection");
-const dotenv = require("dotenv").config();
+const config = require("./config/config");
 
 let server;
 
@@ -20,7 +20,7 @@ const startServer = async () => {
 
     await App(app);
 
-    const PORT = process.env.PORT || 8000;
+    const PORT = config.port;
 
     server = app.listen(PORT, () => {
       console.log(`Server is running on port: ${PORT}`);

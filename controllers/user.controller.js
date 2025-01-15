@@ -1,7 +1,7 @@
-require("dotenv").config();
 const UserRepository = require("../repositories/user.repository");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const config = require("../config/config");
 
 class UserController {
   constructor() {
@@ -70,11 +70,21 @@ class UserController {
               email: user.email,
             },
           },
-          process.env.ACCESS_TOKEN_SECRET,
-          { expiresIn: "15m" }
+          config.jwt.secret,
+          { expiresIn: config.jwt.accessExpirationMinutes }
         );
 
-        res.status(200).json({ accessToken });
+        res.status(200).json({
+          user: {
+            id: user.id,
+            username: user.username,
+            email: user.email,
+          },
+          accessToken: {
+            JWT_TOKEN: accessToken,
+            JWT_ACCESS_EXPIRATION_MINUTES: config.jwt.accessExpirationMinutes,
+          },
+        });
       } else {
         res.status(401);
         throw new Error("Invalid email or password");

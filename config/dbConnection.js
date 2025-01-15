@@ -1,11 +1,11 @@
-require("dotenv").config();
 const mongoose = require("mongoose");
+const config = require("./config");
 
 const dbConnection = async (retries = 2) => {
   for (let attempt = 1; attempt <= retries; attempt++) {
     try {
-      await mongoose.connect(process.env.MONGO_URI_LOCAL, {
-        dbName: "backend-dipesh-malvia-local",
+      await mongoose.connect(config.mongoose.url, {
+        dbName: "dipesh-layered",
         bufferCommands: false,
       });
       console.log(

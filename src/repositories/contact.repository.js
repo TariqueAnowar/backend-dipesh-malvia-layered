@@ -1,3 +1,5 @@
+const ApiError = require("../utils/ApiError");
+const httpStatus = require("http-status");
 const { isValidObjectId } = require("mongoose");
 const ContactModel = require("../models/contact.model");
 
@@ -5,7 +7,7 @@ class ContactRepository {
   async FindByUserId(user_id) {
     try {
       if (!isValidObjectId(user_id)) {
-        throw new Error("Invalid user_id");
+        throw new ApiError(httpStatus.BAD_REQUEST, "Invalid user_id");
       }
       const contacts = await ContactModel.find({ user_id });
       return contacts;
@@ -18,7 +20,10 @@ class ContactRepository {
   async FindById({ _id, user_id }) {
     try {
       if (!isValidObjectId(_id) || !isValidObjectId(user_id)) {
-        throw new Error("Invalid contact_id or user_id");
+        throw new ApiError(
+          httpStatus.BAD_REQUEST,
+          "Invalid contact_id or user_id"
+        );
       }
       const contacts = await ContactModel.findOne({ user_id, _id });
 
@@ -35,7 +40,7 @@ class ContactRepository {
   async CreateContact(name, email, phone, user_id) {
     try {
       if (!isValidObjectId(user_id)) {
-        throw new Error("Invalid user_id");
+        throw new ApiError(httpStatus.BAD_REQUEST, "Invalid user_id");
       }
       const contact = await ContactModel.create({
         name,
@@ -57,7 +62,10 @@ class ContactRepository {
   async UpdateContact({ _id, user_id, body }) {
     try {
       if (!isValidObjectId(_id) || !isValidObjectId(user_id)) {
-        throw new Error("Invalid contact_id or user_id");
+        throw new ApiError(
+          httpStatus.BAD_REQUEST,
+          "Invalid contact_id or user_id"
+        );
       }
 
       const updatedContact = await ContactModel.findOneAndUpdate(
@@ -79,7 +87,10 @@ class ContactRepository {
   async DeleteContact({ _id, user_id }) {
     try {
       if (!isValidObjectId(_id) || !isValidObjectId(user_id)) {
-        throw new Error("Invalid contact_id or user_id");
+        throw new ApiError(
+          httpStatus.BAD_REQUEST,
+          "Invalid contact_id or user_id"
+        );
       }
 
       const deletedContact = await ContactModel.findOneAndDelete({

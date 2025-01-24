@@ -1,10 +1,8 @@
 const { Strategy, ExtractJwt } = require("passport-jwt");
-const UserRepository = require("../repositories/user.repository");
+const UserService = require("../services/user.service");
 const config = require("./config");
 const ApiError = require("../utils/ApiError");
 const httpStatus = require("http-status");
-
-const userRepository = new UserRepository();
 
 const opts = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -13,7 +11,7 @@ const opts = {
 
 const jwtVerify = async (payload, done) => {
   try {
-    const user = await userRepository.FindByEmail(payload.user.email);
+    const user = await UserService.getUserById(payload.sub);
     if (!user) {
       return done(new ApiError(httpStatus.NOT_FOUND, "User not found"), false);
     }

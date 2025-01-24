@@ -1,164 +1,33 @@
-const UserRepository = require("../repositories/user.repository");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
-const config = require("../config/config");
-const ApiError = require("../utils/ApiError");
 const httpStatus = require("http-status");
+const asyncHandler = require("express-async-handler");
+const UserService = require("../services/user.service");
 
 class UserController {
-  constructor() {
-    this.repository = new UserRepository();
-  }
+  getUsers = asyncHandler(async (req, res) => {
+    const query = req.query.isEmpty ? req.query : { role: "user" };
+    const users = await UserService.getUsers(query);
+    res.status(httpStatus.OK).json(users);
+  });
 
-  /**
-   * Register a user
-   * @desc Register a user
-   * @route POST /api/users/register
-   * @access public
-   * @param {Object} req - Express request object
-   * @param {Object} res - Express response object
-   * @param {Function} next - Express next middleware function
-   * @param {string} req.body.username - Username of the user
-   * @param {string} req.body.password - Password of the user
-   * @param {string} req.body.email - Email of the user
-   */
-  RegisterUser = async (req, res, next) => {
-    try {
-      const { username, password, email } = req.body;
+  updateUser = asyncHandler(async (req, res) => {
+    const user = await UserService.updateUserById(req.params.userId, req.body);
+    res.status(httpStatus.OK).json(user);
+  });
 
-      if (!username || !password || !email) {
-        throw new ApiError(httpStatus.BAD_REQUEST, "All fields are mandatory");
-      }
+  deleteUser = asyncHandler(async (req, res) => {
+    await UserService.deleteUserById(req.params.userId);
+    res.status(httpStatus.NO_CONTENT).send();
+  });
 
-      const userAvailable = await this.repository.FindByEmail(email);
+  getProfile = asyncHandler(async (req, res) => {
+    const user = await UserService.getUserById(req.user.id);
+    res.status(httpStatus.OK).json(user);
+  });
 
-      if (userAvailable) {
-        throw new ApiError(httpStatus.BAD_REQUEST, "User already exists");
-      }
-
-      // Hash the password before saving to the database
-      const saltRounds = 10;
-      const hashedPassword = await bcrypt.hash(password, saltRounds);
-
-      const user = await this.repository.CreateUser(
-        username,
-        hashedPassword,
-        email
-      );
-
-      if (!user) {
-        throw new ApiError(httpStatus.BAD_REQUEST, "Invalid user data");
-      }
-
-      return res.status(201).json(user);
-    } catch (err) {
-      next(err);
-    }
-  };
-
-  /**
-   * Login a user
-   * @desc Login a user
-   * @route POST /api/users/login
-   * @access public
-   * @param {Object} req - Express request object
-   * @param {Object} res - Express response object
-   * @param {Function} next - Express next middleware function
-   * @param {string} req.body.email - Email of the user
-   * @param {string} req.body.password - Password of the user
-   */
-  LoginUser = async (req, res, next) => {
-    try {
-      const { email, password } = req.body;
-      if (!email || !password) {
-        throw new ApiError(httpStatus.BAD_REQUEST, "Missing input or fields");
-      }
-
-      const user = await this.repository.FindByEmail(email);
-
-      if (user && (await bcrypt.compare(password, user.password))) {
-        const accessToken = jwt.sign(
-          {
-            user: {
-              id: user.id,
-              email: user.email,
-            },
-          },
-          config.jwt.secret,
-          { expiresIn: config.jwt.accessExpirationMinutes }
-        );
-
-        res.status(200).json({
-          user: {
-            role: "",
-            username: user.username,
-            name: "",
-            email: user.email,
-            isEmailVerified: "false",
-            id: user.id,
-          },
-          tokens: {
-            access: {
-              token: accessToken,
-              expires: config.jwt.accessExpirationMinutes,
-            },
-            refresh: {
-              token: "",
-              expires: "",
-            },
-          },
-        });
-      } else {
-        throw new ApiError(
-          httpStatus.UNAUTHORIZED,
-          "Invalid email or password"
-        );
-      }
-    } catch (err) {
-      next(err);
-    }
-  };
-
-  /**
-   * Get current user from DB
-   * @desc Current user from DB
-   * @route GET /api/users/currentUser
-   * @access private
-   * @param {Object} req - Express request object
-   * @param {Object} res - Express response object
-   * @param {Function} next - Express next middleware function
-   */
-  CurrentUser = async (req, res, next) => {
-    try {
-      const email = req.user.email;
-      const user = await this.repository.FindByEmail(email);
-      if (!user) {
-        throw new ApiError(httpStatus.NOT_FOUND, "User not found");
-      }
-      res.status(200).json({ currentUser: user });
-    } catch (err) {
-      next(err);
-    }
-  };
-
-  /**
-   * Get current user token
-   * @desc Current user token
-   * @route GET /api/users/currentToken
-   * @access private
-   * @param {Object} req - Express request object
-   * @param {Object} res - Express response object
-   * @param {Function} next - Express next middleware function
-   */
-  CurrentToken = async (req, res, next) => {
-    try {
-      res.status(200).json({ currentToken: req.user });
-    } catch (err) {
-      next(err);
-    }
-  };
-
-  // ... other controller methods
+  updateProfile = asyncHandler(async (req, res) => {
+    const user = await UserService.updateUserById(req.user.id, req.body);
+    res.status(httpStatus.OK).json(user);
+  });
 }
 
-module.exports = UserController;
+module.exports = new UserController();

@@ -22,4 +22,23 @@ const authenticateJWT = (req, res, next) => {
   })(req, res, next);
 };
 
-module.exports = authenticateJWT;
+const authorizeRole = (...roles) => {
+  return (req, res, next) => {
+    if (!req.user) {
+      return next(new ApiError(httpStatus.UNAUTHORIZED, "Please authenticate"));
+    }
+
+    if (!roles.includes(req.user.role)) {
+      return next(
+        new ApiError(
+          httpStatus.FORBIDDEN,
+          "Forbidden: Insufficient permissions"
+        )
+      );
+    }
+
+    next();
+  };
+};
+
+module.exports = { authenticateJWT, authorizeRole };

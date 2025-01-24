@@ -1,0 +1,53 @@
+version: "3.8"
+
+services:
+  dipesh-layered-api:
+    depends_on:
+      - dipesh-layered-db
+
+    # specify the build context for the api service
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    ports:
+      - 8000:8000
+
+    environment:
+      PORT: 8000
+      ACCESS_TOKEN_SECRET: myaccesssecretforjwt
+      MONGO_URI_LOCAL: mongodb://sujata:testpass@dipesh-layered-db:27017/
+
+    restart: unless-stopped
+
+    # establish docker compose watch mode for the api service
+    develop:
+      # specify the files to watch for changes
+      watch:
+        # it'll watch for changes in package.json and package-lock.json and rebuild the container and image if there are any changes
+        - path: ./package.json
+          action: rebuild
+        - path: ./package-lock.json
+          action: rebuild
+
+        # it'll watch for changes in the backend directory and sync the changes with the container real time
+        - path: ./
+          target: /app
+          action: sync
+
+  # define the db service
+  dipesh-layered-db:
+    image: mongo
+    ports:
+      - 27017:27017
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=sujata
+      - MONGO_INITDB_ROOT_PASSWORD=testpass
+    volumes:
+      - tasked:/data/db
+
+# define the volumes to be used by the services
+volumes:
+  tasked:
+
+

@@ -53,6 +53,11 @@ app.use("/api/auth", authRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/user", userRoutes);
 
+// Health check
+app.get("/api/health", (req, res) => {
+  res.status(httpStatus.OK).send("OK");
+});
+
 // Route not found
 app.use((req, res, next) => {
   next(new ApiError(httpStatus.NOT_FOUND, "Route Not Found"));

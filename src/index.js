@@ -2,20 +2,32 @@ const mongoose = require("mongoose");
 const app = require("./app");
 const config = require("./config/config");
 const logger = require("./config/logger");
+const connectToDatabase = require("./config/database");
 
 let server;
-mongoose
-  .connect(config.mongoose.url, config.mongoose.options)
-  .then(() => {
-    logger.info("Connected to MongoDB");
+
+// Configurable retry settings
+const MAX_RETRIES = process.env.DB_MAX_RETRIES || 3;
+const RETRY_DELAY_MS = process.env.DB_RETRY_DELAY_MS || 1000;
+
+const startServer = async () => {
+  try {
+    const isConnected = await connectToDatabase(MAX_RETRIES, RETRY_DELAY_MS);
+    if (!isConnected) {
+      logger.error("Failed to connect to database. Server will not start.");
+      process.exit(1);
+    }
+
     server = app.listen(config.port, () => {
       logger.info(`Listening to port ${config.port}`);
     });
-  })
-  .catch((error) => {
-    logger.error(`Error connecting to MongoDB: ${error.message || error}`);
+  } catch (error) {
+    logger.error("Error starting server:", error.message);
     process.exit(1);
-  });
+  }
+};
+
+startServer();
 
 // Handle application shutdown
 const shutdown = async (signal) => {

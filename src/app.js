@@ -45,7 +45,7 @@ app.use(passport.initialize());
 if (config.env === "production" || config.env === "development") {
   app.use("/api/auth", authLimiter);
   app.use("/api/admin", sensitiveRoutesLimiter);
-  app.use("/api", apiLimiter);
+  //app.use("/api", apiLimiter);
 }
 
 // Routes

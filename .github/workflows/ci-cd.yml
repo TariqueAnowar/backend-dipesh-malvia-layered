@@ -27,7 +27,17 @@ jobs:
       - name: Run Tests
         run: npm test
 
-      # Validate Docker Compose files
+      # Add Docker setup steps
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      # Add Docker Compose setup
+      - name: Set up Docker Compose
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y docker-compose
+
+      # Now validate Docker Compose files
       - name: Validate Docker Compose
         run: docker-compose -f docker-compose-render.yml -f docker-compose-prod.yml config
 

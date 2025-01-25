@@ -39,7 +39,7 @@ jobs:
 
       # Now validate Docker Compose files
       - name: Validate Docker Compose
-        run: docker-compose -f docker-compose-render.yml -f docker-compose-prod.yml config
+        run: docker compose -f docker-compose.yml -f docker-compose-prod.yml config
 
   cd:
     needs: ci # This ensures CD only runs if CI passes

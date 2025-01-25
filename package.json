@@ -4,10 +4,13 @@
   "description": "Simple backend with login, registrations etc.",
   "main": "src/index.js",
   "scripts": {
-    "test": "jest",
+    "dev": "cross-env NODE_ENV=development nodemon src/index.js",
     "start": "cross-env NODE_ENV=production node src/index.js",
-    "dev": "nodemon src/index.js",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "test": "jest",
+    "docker:dev": "docker-compose -f docker-compose.yml -f docker-compose-dev.yml up",
+    "docker:prod": "docker-compose -f docker-compose.yml -f docker-compose-prod.yml up",
+    "docker:render": "docker-compose -f docker-compose-render.yml -f docker-compose-prod.yml up"
   },
   "author": "Tarique Anowar",
   "license": "UNLICENCED",

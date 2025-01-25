@@ -32,6 +32,17 @@ services:
       SMTP_PASSWORD: bWhKsEgr55aHZWTjpq
       EMAIL_FROM: support@yourapp.com
     restart: unless-stopped
+    develop:
+      watch:
+        - action: sync
+          path: .
+          target: /app
+          ignore:
+            - node_modules/
+        - action: rebuild
+          path: package.json
+        - action: rebuild
+          path: package-lock.json
 
   mongodb:
     image: mongo
